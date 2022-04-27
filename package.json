@@ -1,0 +1,31 @@
+{
+  "name": "camelcase",
+  "version": "0.1.0",
+  "description": "Camel case function with type level support",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Juici/camelcase-ts.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "generate": "node ./scripts/generate.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.27",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.0.2",
+    "prettier": "^2.6.1",
+    "ts-jest": "^28.0.0-next.1",
+    "typescript": "^4.6.3"
+  }
+}
