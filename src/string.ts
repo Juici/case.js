@@ -4,6 +4,17 @@ import type {
   TrailingSurrogate,
 } from "./generated/utf16";
 
+export type IsLowercase<C extends string> = Lowercase<C> extends C
+  ? Uppercase<C> extends C
+    ? false
+    : true
+  : false;
+export type IsUppercase<C extends string> = Uppercase<C> extends C
+  ? Lowercase<C> extends C
+    ? false
+    : true
+  : false;
+
 export type Chars<S extends string> = S extends `${infer First}${infer Tail}`
   ? First extends NonSurrogate1 | NonSurrogate2
     ? [First, ...Chars<Tail>]

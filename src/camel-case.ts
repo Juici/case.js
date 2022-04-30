@@ -1,5 +1,5 @@
-import type { Ll, Lu, NonAlphanumeric } from "./generated/unicode";
-import type { Chars, JoinChars } from "./string";
+import type { NonAlphanumeric } from "./generated/unicode";
+import type { Chars, IsLowercase, IsUppercase, JoinChars } from "./string";
 
 type SegmentsInner<
   Left extends string[],
@@ -51,9 +51,12 @@ type HandleChunk<
     : never
   : S["ret"];
 
-type GetNextMode<S extends InnerState, C extends string> = C extends Ll
+type GetNextMode<
+  S extends InnerState,
+  C extends string,
+> = IsLowercase<C> extends true
   ? "lowercase"
-  : C extends Lu
+  : IsUppercase<C> extends true
   ? "uppercase"
   : S["mode"];
 
@@ -74,7 +77,7 @@ type IterInner<S extends InnerState> = S["right"] extends []
     ? C2 extends string
       ? Tail extends string[]
         ? GetNextMode<S, C1> extends infer NextMode
-          ? [NextMode, C2] extends ["lowercase", Lu]
+          ? [NextMode, IsUppercase<C2>] extends ["lowercase", true]
             ? IterInner<{
                 first: false;
                 mode: "boundary";
@@ -82,7 +85,11 @@ type IterInner<S extends InnerState> = S["right"] extends []
                 right: [C2, ...Tail];
                 ret: HandleChunk<S, [...S["left"], C1]>;
               }>
-            : [S["mode"], C1, C2] extends ["uppercase", Lu, Ll]
+            : [S["mode"], IsUppercase<C1>, IsLowercase<C2>] extends [
+                "uppercase",
+                true,
+                true,
+              ]
             ? IterInner<{
                 first: false;
                 mode: "boundary";

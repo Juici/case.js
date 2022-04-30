@@ -1,9 +1,9 @@
 import type { CamelCase } from "./camel-case";
 export type { CamelCase } from "./camel-case";
 
-const LOWERCASE = /^[\p{Ll}]+$/u;
-const UPPERCASE = /^[\p{Lu}]+$/u;
-const NON_ALPHANUMERIC = /[^\p{Alpha}\p{N}]/gu;
+const LOWERCASE = /^\p{Lowercase}+$/u;
+const UPPERCASE = /^\p{Uppercase}+$/u;
+const NON_ALPHANUMERIC = /[^\p{Alphabetic}\p{N}]/gu;
 
 function segments(input: string): string[] {
   return input.split(NON_ALPHANUMERIC);

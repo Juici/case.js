@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --no-cache",
     "generate": "node ./scripts/generate.js"
   },
   "dependencies": {},
