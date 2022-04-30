@@ -49,7 +49,7 @@ function range(min, max) {
 
 const HEADER = "// This file was automatically generated.\n\n";
 const UNICODE_TYPES = {
-  NonAlphanumeric: /^[^\p{Alphabetic}\p{N}]+$/u,
+  Alphanumeric: /^[\p{Alphabetic}\p{N}]+$/u,
 };
 const UTF16_TYPES = {
   NonSurrogate1: [0x0000, 0xd7ff],

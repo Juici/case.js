@@ -1,4 +1,4 @@
-import type { NonAlphanumeric } from "./generated/unicode";
+import type { Alphanumeric } from "./generated/unicode";
 import type { Chars, IsLowercase, IsUppercase, JoinChars } from "./string";
 
 type SegmentsInner<
@@ -11,13 +11,11 @@ type SegmentsInner<
     : [...Out, Left]
   : Right extends [infer C, ...infer Tail]
   ? Tail extends string[]
-    ? C extends NonAlphanumeric
-      ? Left extends []
-        ? SegmentsInner<[], Tail, Out>
-        : SegmentsInner<[], Tail, [...Out, Left]>
-      : C extends string
-      ? SegmentsInner<[...Left, C], Tail, Out>
-      : never
+    ? C extends Alphanumeric
+      ? SegmentsInner<[...Left, Right[0]], Tail, Out>
+      : Left extends []
+      ? SegmentsInner<[], Tail, Out>
+      : SegmentsInner<[], Tail, [...Out, Left]>
     : never
   : never;
 
