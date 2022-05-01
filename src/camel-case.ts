@@ -122,8 +122,10 @@ type IterOuter<S extends OuterState> = S["segments"] extends [
     : never
   : S["ret"];
 
-export type CamelCase<S extends string> = IterOuter<{
-  first: true;
-  ret: "";
-  segments: Segments<Chars<S>>;
-}>;
+export type CamelCase<S extends string> = string extends S
+  ? string
+  : IterOuter<{
+      first: true;
+      ret: "";
+      segments: Segments<Chars<S>>;
+    }>;
