@@ -1,4 +1,4 @@
-import camelCase, { type CamelCase } from "./index";
+import camelCase, { type CamelCase } from "../src/index";
 
 function addTest<S extends string>(input: S, expected: CamelCase<S>) {
   test(`"${input}" -> "${expected}"`, () => {

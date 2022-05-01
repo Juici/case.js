@@ -16,8 +16,10 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "incremental": true
   },
-  "include": ["src"],
+  "files": ["src/index.ts"],
   "exclude": ["node_modules"]
 }
