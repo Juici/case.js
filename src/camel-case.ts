@@ -1,5 +1,5 @@
 import type { Alphanumeric } from "./generated/unicode";
-import type { Chars, IsLowercase, IsUppercase, JoinChars } from "./string";
+import type { Chars, IsLowercase, IsUppercase } from "./string";
 
 type SegmentsInner<
   Left extends string[],
@@ -41,7 +41,7 @@ type HandleChunk<
   ? `${S["ret"]}${Lowercase<Chunk>}`
   : `${S["ret"]}${Capitalize<Lowercase<Chunk>>}`;
 
-type GetNextMode<
+type NextMode<
   S extends InnerState,
   C extends string,
 > = IsLowercase<C> extends true
@@ -51,23 +51,22 @@ type GetNextMode<
   : S["mode"];
 
 type IterInner<S extends InnerState> = S["right"] extends [
-  infer C1,
-  infer C2,
+  infer C,
   ...infer Tail,
 ]
-  ? C1 extends string
-    ? C2 extends string
-      ? Tail extends string[]
-        ? GetNextMode<S, C1> extends infer NextMode
-          ? [NextMode, IsUppercase<C2>] extends ["lowercase", true]
+  ? C extends string
+    ? Tail extends [infer Next, ...string[]]
+      ? Next extends string
+        ? Tail extends string[]
+          ? [NextMode<S, C>, IsUppercase<Next>] extends ["lowercase", true]
             ? IterInner<{
                 first: false;
                 mode: "boundary";
                 left: "";
-                right: [C2, ...Tail];
-                ret: HandleChunk<S, `${S["left"]}${C1}`>;
+                right: Tail;
+                ret: HandleChunk<S, `${S["left"]}${C}`>;
               }>
-            : [S["mode"], IsUppercase<C1>, IsLowercase<C2>] extends [
+            : [S["mode"], IsUppercase<C>, IsLowercase<Next>] extends [
                 "uppercase",
                 true,
                 true,
@@ -75,32 +74,26 @@ type IterInner<S extends InnerState> = S["right"] extends [
             ? IterInner<{
                 first: false;
                 mode: "boundary";
-                left: C1;
-                right: [C2, ...Tail];
+                left: C;
+                right: Tail;
                 ret: HandleChunk<S, S["left"]>;
               }>
-            : NextMode extends WordMode
-            ? IterInner<{
+            : IterInner<{
                 first: S["first"];
-                mode: NextMode;
-                left: `${S["left"]}${C1}`;
-                right: [C2, ...Tail];
+                mode: NextMode<S, C>;
+                left: `${S["left"]}${C}`;
+                right: Tail;
                 ret: S["ret"];
               }>
-            : never
           : never
         : never
-      : never
-    : never
-  : S["right"] extends [infer C]
-  ? C extends string
-    ? {
-        first: false;
-        mode: S["mode"];
-        left: "";
-        right: [];
-        ret: HandleChunk<S, `${S["left"]}${C}`>;
-      }
+      : {
+          first: false;
+          mode: S["mode"];
+          left: "";
+          right: [];
+          ret: HandleChunk<S, `${S["left"]}${C}`>;
+        }
     : never
   : S;
 

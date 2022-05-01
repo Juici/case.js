@@ -23,9 +23,3 @@ type CharsInner<
   : Out;
 
 export type Chars<S extends string> = CharsInner<S, []>;
-
-type JoinCharsInner<S, Out extends string> = S extends [string, ...infer Tail]
-  ? JoinCharsInner<Tail, `${Out}${S[0]}`>
-  : Out;
-
-export type JoinChars<S extends string[]> = JoinCharsInner<S, "">;
