@@ -52,9 +52,7 @@ const UNICODE_TYPES = {
   Alphanumeric: /^[\p{Alphabetic}\p{N}]+$/u,
 };
 const UTF16_TYPES = {
-  NonSurrogate1: [0x0000, 0xd7ff],
-  NonSurrogate2: [0xe000, 0xffff],
-  // TrailingSurrogate: [0xdc00, 0xdfff],
+  LeadingSurrogate: [0xd800, 0xdbff],
 };
 
 const dir = path.resolve(__dirname, "../src/generated");
