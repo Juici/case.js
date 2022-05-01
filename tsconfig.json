@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "dist",
     "declaration": true,
-    "typeRoots": ["./node_modules/@types"],
     "moduleResolution": "node",
     "module": "commonjs",
     "lib": ["esnext"],
@@ -17,9 +16,7 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
-    "isolatedModules": true,
     "incremental": true
   },
-  "files": ["src/index.ts"],
-  "exclude": ["node_modules"]
+  "files": ["src/index.ts"]
 }
