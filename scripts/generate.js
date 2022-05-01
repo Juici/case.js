@@ -54,7 +54,7 @@ const UNICODE_TYPES = {
 const UTF16_TYPES = {
   NonSurrogate1: [0x0000, 0xd7ff],
   NonSurrogate2: [0xe000, 0xffff],
-  TrailingSurrogate: [0xdc00, 0xdfff],
+  // TrailingSurrogate: [0xdc00, 0xdfff],
 };
 
 const dir = path.resolve(__dirname, "../src/generated");
