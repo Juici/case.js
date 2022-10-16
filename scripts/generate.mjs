@@ -8,7 +8,7 @@ import ms from "pretty-ms";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const PROJECT_ROOT = path.dirname(__dirname);
-const GENERATED_DIR = path.resolve(PROJECT_ROOT, "src/types/generated");
+const GENERATED_DIR = path.resolve(PROJECT_ROOT, "types/generated");
 
 const UNICODE_MIN = 0x0000;
 const UNICODE_MAX = 0x10ffff;
@@ -42,7 +42,7 @@ console.log(
  * @param {string} content
  */
 async function generateFile(name, content) {
-  const file = path.resolve(GENERATED_DIR, `${name}.ts`);
+  const file = path.resolve(GENERATED_DIR, `${name}.d.ts`);
 
   await fs.promises.writeFile(file, HEADER + content, "utf-8");
 }

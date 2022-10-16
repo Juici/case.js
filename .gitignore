@@ -10,7 +10,7 @@
 /dist/
 /build/
 /coverage/
-/src/types/generated/
+/types/generated/
 
 # Logs.
 npm-debug.log*
