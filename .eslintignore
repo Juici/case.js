@@ -1,4 +1,11 @@
-scripts/
-tests/
-dist/
-jest.config.js
+!.*
+node_modules/**
+dist/**
+build/**
+coverage/**
+src/types/generated/**
+
+**/.yarn
+**/.pnp.*
+
+LICENSE*
