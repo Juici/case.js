@@ -6,7 +6,7 @@ aware, internally consistent, and reasonably well performing.
 
 The transformation algorithm in this library is based on the Rust [heck] library.
 
-[heck]: <https://github.com/withoutboats/heck>
+[heck]: https://github.com/withoutboats/heck
 
 ## Cases contained in this library
 
