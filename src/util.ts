@@ -6,21 +6,15 @@ function segments(input: string): Array<string> {
   return input.split(NON_ALPHANUMERIC);
 }
 
-function* charIndices(s: string): Generator<[number, string], void, void> {
-  let i = 0;
-  for (const c of s) {
-    yield [i, c];
-    i++;
-  }
-}
-
-function peekable<T, TReturn>(
-  iter: Iterator<T, TReturn, void>,
-): {
-  next(): IteratorResult<T, TReturn>;
-  peek(): IteratorResult<T, TReturn>;
+function charIndices(s: string): {
+  next(): IteratorResult<[number, string], void>;
+  peek(): IteratorResult<[number, string], void>;
 } {
-  let peeked: IteratorResult<T, TReturn> | undefined;
+  const it: Iterator<string, void, void> = s[Symbol.iterator]();
+
+  let i = 0;
+  let peeked: IteratorResult<[number, string], void> | undefined;
+
   return {
     next() {
       if (peeked) {
@@ -28,10 +22,31 @@ function peekable<T, TReturn>(
         peeked = undefined;
         return ret;
       }
-      return iter.next();
+
+      const { done, value } = it.next();
+      if (done) {
+        return { done: true, value: undefined };
+      }
+
+      const idx = i;
+      i += value.length;
+
+      return { done: false, value: [idx, value] };
     },
     peek() {
-      return peeked ?? (peeked = iter.next());
+      if (peeked) {
+        return peeked;
+      }
+
+      const { done, value } = it.next();
+      if (done) {
+        return (peeked = { done: true, value: undefined });
+      }
+
+      const idx = i;
+      i += value.length;
+
+      return (peeked = { done: false, value: [idx, value] });
     },
   };
 }
@@ -61,7 +76,7 @@ export function transform(
     let init = 0;
     let mode = WordMode.Boundary;
 
-    const iter = peekable(charIndices(word));
+    const iter = charIndices(word);
 
     let next: ReturnType<typeof iter.next>;
     while (!(next = iter.next()).done) {
