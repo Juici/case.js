@@ -1,6 +1,6 @@
 {
   "name": "@juici/case",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A case conversion library with type level support",
   "license": "(MIT OR Apache-2.0)",
   "files": [
@@ -8,7 +8,8 @@
     "LICENSE-MIT",
     "dist/",
     "src/",
-    "types/"
+    "types/",
+    "!src/**/__tests__/"
   ],
   "repository": {
     "type": "git",
