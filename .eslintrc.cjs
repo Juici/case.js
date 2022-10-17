@@ -13,7 +13,6 @@ module.exports = {
   ],
   env: {
     es2020: true,
-    "shared-node-browser": true,
   },
   globals: {
     console: "readonly",
@@ -104,7 +103,6 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     sourceType: "module",
-    ecmaVersion: "latest",
   },
   plugins: ["import"],
   rules: {
@@ -121,7 +119,7 @@ module.exports = {
           "**/__tests__/**",
           "scripts/**",
           ".eslintrc.cjs",
-          "jest.config.mjs",
+          "jest.config(.*)?.mjs",
           "rollup.config.mjs",
         ],
       },

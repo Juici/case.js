@@ -4,6 +4,7 @@ dist/**
 build/**
 coverage/**
 types/generated/**
+.rollup.cache/**
 
 **/.yarn
 **/.pnp.*

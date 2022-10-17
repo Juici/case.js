@@ -1,11 +1,6 @@
 {
+  "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": ["esnext"],
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-
     "noEmit": true,
     "importsNotUsedAsValues": "error",
     "stripInternal": true,
@@ -19,8 +14,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
 
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": false,
+    "resolveJsonModule": true
   },
   "include": ["src", "types"],
   "exclude": ["dist", "node_modules"]

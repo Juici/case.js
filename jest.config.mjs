@@ -1,14 +1,9 @@
 import { createRequire } from "module";
 
-/**
- * @typedef {import("jest").Config} JestConfig
- * @typedef {import("ts-jest").TsJestGlobalOptions} TsJestOptions
- */
-
 const require = createRequire(import.meta.url);
 
 /**
- * @type {JestConfig}
+ * @type {import("jest").Config}
  */
 export default {
   collectCoverageFrom: ["src/**/*.ts", "!**/__tests__/**", "!build/**", "!dist/**"],
@@ -21,9 +16,9 @@ export default {
   testPathIgnorePatterns: ["/node_modules/", "/build/", "/dist/", "/scripts/", "\\.snap$"],
   transform: {
     /**
-     * @type {[string, TsJestOptions]}
+     * @type {[string, import("ts-jest").TsJestGlobalOptions]}
      */
-    "\\.ts$": [require.resolve("ts-jest")],
+    "\\.ts$": [require.resolve("ts-jest"), {}],
   },
   watchPathIgnorePatterns: ["coverage"],
   watchPlugins: [
