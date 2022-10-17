@@ -1,0 +1,18 @@
+# Misc.
+.idea
+.DS_Store
+.eslintcache
+*.swp
+*~
+
+# Dependencies/Build.
+/node_modules/
+/dist/
+/build/
+/coverage/
+/types/generated/
+/.rollup.cache/
+
+# Yarn.
+**/.yarn
+**/.pnp.*

@@ -1,22 +1,25 @@
 {
+  "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "declaration": true,
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "lib": ["esnext"],
-    "target": "es2022",
-    "sourceMap": true,
-    "noEmitOnError": true,
-    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "importsNotUsedAsValues": "error",
+    "stripInternal": true,
+
     "strict": true,
-    "exactOptionalPropertyTypes": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
+
+    "module": "esnext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "incremental": true
+    "skipLibCheck": false,
+    "resolveJsonModule": true
   },
-  "files": ["src/index.ts"]
+  "include": ["src", "types"],
+  "exclude": ["dist", "node_modules"]
 }

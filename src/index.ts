@@ -1,149 +1,44 @@
-import type { CamelCase } from "./camel-case";
-export type { CamelCase } from "./camel-case";
+import { capitalize, transform } from "./util";
 
-const LOWERCASE = /^\p{Lowercase}+$/u;
-const UPPERCASE = /^\p{Uppercase}+$/u;
-const NON_ALPHANUMERIC = /[^\p{Alphabetic}\p{N}]/gu;
+import type { CamelCase, KebabCase, PascalCase, SnakeCase } from "../types";
+export type { CamelCase, KebabCase, PascalCase, SnakeCase } from "../types";
 
-function segments(input: string): string[] {
-  return input.split(NON_ALPHANUMERIC);
-}
-
-function chars(s: string):
-  | {
-      done: false;
-      next: () => [string, number];
-      peek: () => [string, number] | null;
-    }
-  | {
-      done: true;
-      next: () => null;
-      peek: () => null;
-    } {
-  const it = s[Symbol.iterator]();
-
-  let i = 0;
-  let peeked: string | null = it.next().value ?? null;
-
-  return {
-    done: peeked === null,
-    next() {
-      let c: string;
-      if (peeked) {
-        c = peeked;
-        peeked = null;
-      } else {
-        c = it.next().value;
-        if (!c) {
-          this.done = true;
-          this.next = () => null;
-          this.peek = () => null;
-          return null;
-        }
-      }
-
-      const idx = i;
-      i += c.length;
-      return [c, idx];
-    },
-    peek() {
-      if (peeked === null) {
-        peeked = it.next().value;
-        if (!peeked) {
-          this.peek = () => null;
-          return null;
-        }
-      }
-      return [peeked, i];
-    },
-  } as ReturnType<typeof chars>;
-}
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
-}
-
-const enum WordMode {
-  /** There have been no lowercase or uppercase characters in the current word. */
-  Boundary,
-  /** The previous cased character in the current word in lowercase */
-  Lowercase,
-  /** The previous cased character in the current word in uppercase */
-  Uppercase,
-}
-
-export default function camelCase<S extends string>(input: S): CamelCase<S> {
+/**
+ * Converts the input into camel case.
+ */
+export function camelCase<S extends string>(input: S): CamelCase<S> {
   let first = true;
-  let ret = "";
-
-  for (const word of segments(input)) {
-    let init = 0;
-    let mode = WordMode.Boundary;
-
-    const it = chars(word);
-    while (!it.done) {
-      const [c, i] = it.next();
-
-      const peeked = it.peek();
-      if (peeked) {
-        const [next, nextIdx] = peeked;
-
-        // The mode including the current character, assuming the current
-        // character does not result in a word boundary.
-        let nextMode: WordMode;
-        if (LOWERCASE.test(c)) {
-          nextMode = WordMode.Lowercase;
-        } else if (UPPERCASE.test(c)) {
-          nextMode = WordMode.Uppercase;
-        } else {
-          nextMode = mode;
-        }
-
-        if (nextMode === WordMode.Lowercase && UPPERCASE.test(next)) {
-          // Next is underscore or current is not uppercase and next is
-          // uppercase, at a word boundary.
-          const chunk = word.slice(init, nextIdx);
-          if (first) {
-            ret += chunk.toLowerCase();
-            first = false;
-          } else {
-            ret += capitalize(chunk);
-          }
-          init = nextIdx;
-          mode = WordMode.Boundary;
-        } else if (
-          mode === WordMode.Uppercase &&
-          UPPERCASE.test(c) &&
-          LOWERCASE.test(next)
-        ) {
-          // Current and previous are uppercase and next is lowercase, word
-          // boundary before.
-          const chunk = word.slice(init, i);
-          if (first) {
-            ret += chunk.toLowerCase();
-            first = false;
-          } else {
-            ret += capitalize(chunk);
-          }
-          init = i;
-          mode = WordMode.Boundary;
-        } else {
-          // No word boundary, just update the mode.
-          mode = nextMode;
-        }
+  return transform(
+    input,
+    (w) => {
+      if (first) {
+        first = false;
+        return w.toLowerCase();
       } else {
-        // Collect trailing characters as a word.
-        const chunk = word.slice(init);
-        if (first) {
-          ret += chunk.toLowerCase();
-          first = false;
-        } else {
-          ret += capitalize(chunk);
-        }
-        break;
+        return capitalize(w);
       }
-    }
-  }
+    },
+    "",
+  ) as CamelCase<S>;
+}
 
-  return ret as CamelCase<S>;
+/**
+ * Converts the input into kebab case.
+ */
+export function kebabCase<S extends string>(input: S): KebabCase<S> {
+  return transform(input, (w) => w.toLowerCase(), "-") as KebabCase<S>;
+}
+
+/**
+ * Converts the input into pascal case.
+ */
+export function pascalCase<S extends string>(input: S): PascalCase<S> {
+  return transform(input, (w) => capitalize(w), "") as PascalCase<S>;
+}
+
+/**
+ * Converts the input into snake case.
+ */
+export function snakeCase<S extends string>(input: S): SnakeCase<S> {
+  return transform(input, (w) => w.toLowerCase(), "_") as SnakeCase<S>;
 }
